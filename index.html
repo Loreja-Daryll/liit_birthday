@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌷 Happy Birthday</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <!-- Ceiling -->
+            <div class="ceiling"></div>
+
+            <!-- Hanging Lamp -->
+            <div class="lamp-container">
+                <!-- Chain/String -->
+                <div id="lampChain" class="lamp-chain">
+                    <div class="chain-link"></div>
+                    <div class="chain-link"></div>
+                    <div class="chain-link"></div>
+                </div>
+
+                <!-- Lamp Fixture -->
+                <div class="lamp-fixture">
+                    <!-- Lamp Shade -->
+                    <div id="lampShade" class="lamp-shade">
+                        <div class="shade-inner"></div>
+                    </div>
+
+                    <!-- Lamp Bulb -->
+                    <div id="lampBulb" class="lamp-bulb"></div>
+                </div>
+            </div>
+
+            <!-- Password Input (initially hidden) -->
+            <div id="passwordContainer" class="password-container hidden">
+                <div class="password-box">
+                    <h2>Enter Password</h2>
+                    <input 
+                        type="password" 
+                        id="passwordField" 
+                        placeholder="Enter numbers..." 
+                        maxlength="8"
+                        class="password-input"
+                    >
+                    <button id="submitBtn" class="password-submit">Confirm</button>
+                    <p class="password-hint">💡 Numbers only</p>
+                </div>
+            </div>
+
+            <!-- Dark room background -->
+            <div class="room-glow"></div>
+        </div>
+    </div>
+
+    <!-- Wrong Password Page -->
+    <div id="wrongPasswordPage" class="page">
+        <div class="error-container">
+            <h1 class="error-message">Hindi ikay ang best friend ko. 💔</h1>
+            <button id="backBtn" class="back-btn">Go Back</button>
+        </div>
+    </div>
+
+    <!-- Main Landing Page -->
+    <div id="landingPage" class="page">
+        <div class="landing-container">
+            <!-- Left Side: Growing Tulips -->
+            <div class="left-section">
+                <div class="ground"></div>
+                <div class="tulips-field">
+                    <!-- Tulip 1 -->
+                    <div class="tulip tulip-1">
+                        <div class="tulip-stem"></div>
+                        <div class="tulip-bloom">
+                            <div class="petal petal-outer petal-1"></div>
+                            <div class="petal petal-outer petal-2"></div>
+                            <div class="petal petal-outer petal-3"></div>
+                            <div class="petal petal-inner petal-4"></div>
+                            <div class="petal petal-inner petal-5"></div>
+                            <div class="petal petal-inner petal-6"></div>
+                            <div class="center-stamen"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tulip 2 -->
+                    <div class="tulip tulip-2">
+                        <div class="tulip-stem"></div>
+                        <div class="tulip-bloom">
+                            <div class="petal petal-outer petal-1"></div>
+                            <div class="petal petal-outer petal-2"></div>
+                            <div class="petal petal-outer petal-3"></div>
+                            <div class="petal petal-inner petal-4"></div>
+                            <div class="petal petal-inner petal-5"></div>
+                            <div class="petal petal-inner petal-6"></div>
+                            <div class="center-stamen"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tulip 3 -->
+                    <div class="tulip tulip-3">
+                        <div class="tulip-stem"></div>
+                        <div class="tulip-bloom">
+                            <div class="petal petal-outer petal-1"></div>
+                            <div class="petal petal-outer petal-2"></div>
+                            <div class="petal petal-outer petal-3"></div>
+                            <div class="petal petal-inner petal-4"></div>
+                            <div class="petal petal-inner petal-5"></div>
+                            <div class="petal petal-inner petal-6"></div>
+                            <div class="center-stamen"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Bouquet -->
+            <div class="right-section">
+                <div class="bouquet-wrapper hidden">
+                    <div class="bouquet">
+                        <!-- Decorative flowers (background layer) -->
+                        <div class="flower-layer flower-layer-1">
+                            <div class="flower flower-1"></div>
+                            <div class="flower flower-2"></div>
+                            <div class="flower flower-3"></div>
+                            <div class="flower flower-4"></div>
+                            <div class="flower flower-5"></div>
+                        </div>
+
+                        <!-- Image slots (integrated into bouquet) -->
+                        <div class="images-layer">
+                            <div class="image-row top-row">
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-1">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="kyutt.jpg" alt="Photo 1">
+                                    </div>
+                                </div>
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-2">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="liit.jpg" alt="Photo 2">
+                                    </div>
+                                </div>
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-3">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="pogi.jpg" alt="Photo 3">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="image-row bottom-row">
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-4">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="bastasiyayun.jpg" alt="Photo 4">
+                                    </div>
+                                </div>
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-5">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="kyuttapay.jpg" alt="Photo 5">
+                                    </div>
+                                </div>
+                                <div class="image-column">
+                                    <div class="image-bubble"></div>
+                                    <div class="image-slot image-slot-6">
+                                        <div class="stem"></div>
+                                        <div class="leaf leaf-left"></div>
+                                        <div class="leaf leaf-right"></div>
+                                        <img src="nangaasar.jpg" alt="Photo 6">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bouquet wrap/ribbon -->
+                        <div class="bouquet-wrap">
+                            <div class="wrap-ribbon"></div>
+                            <div class="wrap-ribbon-accent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Envelope at bottom -->
+        <div class="envelope-section hidden">
+            <div id="envelope" class="envelope">
+                <div class="envelope-front">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body">
+                        <div class="envelope-label">💌</div>
+                        <p>Open Me</p>
+                    </div>
+                </div>
+                <div class="envelope-back"></div>
+            </div>
+        </div>
+
+        <!-- Letter Modal -->
+        <div id="letterModal" class="letter-modal hidden">
+            <div class="letter-paper">
+                <button class="close-letter">&times;</button>
+                <div class="letter-content">
+                    <h1 class="letter-title">Happy Birthday! 🎉</h1>
+                    <p class="letter-text">Dear Friend,</p>
+                    <p class="letter-text">
+                        On this special day, I want you to know how much you mean to me. 
+                        Thank you for being such an amazing friend and making my life brighter 
+                        with your presence.
+                    </p>
+                    <p class="letter-text">
+                        I hope this day brings you all the joy, laughter, and happiness you deserve. 
+                        May all your dreams come true and may this year be filled with wonderful memories.
+                    </p>
+                    <p class="letter-text">
+                        I made this special page just for you. I hope you like it and it makes you smile. 💕
+                    </p>
+                    <p class="letter-signature">With all my love,<br><span>Your Best Friend</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="photoOverlay" class="photo-overlay hidden">
+            <div class="photo-overlay-content">
+                <button id="photoClose" class="photo-close">&times;</button>
+                <img id="photoOverlayImg" src="" alt="Enlarged photo">
+            </div>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
