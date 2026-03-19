@@ -30,7 +30,13 @@ const photoSources = [
     '2bago.jpg',
     'pogi.jpg',
     'bastasiyayun.jpg',
-    'bagonapic.jpg'
+    'bagonapic.jpg',
+    'pic1.jpg',
+    'pic2.jpg',
+    'pic3.jpg',
+    'pic4.jpg',
+    'pic5.jpg',
+    'pic6.jpg'
 ];
 
 let lampIsLit = false;
@@ -150,7 +156,7 @@ function closeMessage() {
 // ==================== TULIP CLICK - SHOW RANDOM PICTURE ====================
 tulipsAll.forEach((tulip) => {
     tulip.addEventListener('click', () => {
-        if (clickCount < 5) {
+        if (clickCount < 11) {
             showRandomFloatingPicture();
             clickCount++;
         }
@@ -194,7 +200,7 @@ function showRandomFloatingPicture() {
 }
 
 function createFireworks(x, y) {
-    const colors = ['#ff69b4', '#ffdb58', '#ff1493', '#ffc300', '#ff6b9d', '#fff700'];
+    const colors = ['#ff69b4', '#ff5858', '#ff1493', '#ff0000', '#ff6b9d', '#ff0000'];
     
     for (let i = 0; i < 12; i++) {
         const spark = document.createElement('div');
