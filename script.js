@@ -22,16 +22,21 @@ const photoOverlay = document.getElementById('photoOverlay');
 const photoOverlayImg = document.getElementById('photoOverlayImg');
 const photoCloseBtn = document.getElementById('photoClose');
 
-const imageSlots = document.querySelectorAll('.image-slot');
 const tulipsAll = document.querySelectorAll('.tulip');
+const floatingPicturesContainer = document.getElementById('floatingPicturesContainer');
+
+const photoSources = [
+    'kyutt.jpg',
+    '2bago.jpg',
+    'pogi.jpg',
+    'bastasiyayun.jpg',
+    'bagonapic.jpg'
+];
 
 let lampIsLit = false;
 let envelopeOpened = false;
-let tulipClickCount = 0;
-
-const tulipStarsLayer = document.createElement('div');
-tulipStarsLayer.className = 'tulip-stars-layer';
-document.body.appendChild(tulipStarsLayer);
+let clickCount = 0;
+let displayedPhotos = [];
 
 // ==================== LAMP INTERACTION ====================
 lampChain.addEventListener('click', lightUpLamp);
@@ -102,11 +107,6 @@ function startLandingPageAnimations() {
     }, 3500);
 
     setTimeout(() => {
-        const bouquetWrapper = document.querySelector('.bouquet-wrapper');
-        bouquetWrapper.classList.remove('hidden');
-    }, 3700);
-
-    setTimeout(() => {
         const envelopeSection = document.querySelector('.envelope-section');
         envelopeSection.classList.remove('hidden');
     }, 3500);
@@ -147,17 +147,78 @@ function closeMessage() {
     }, 200);
 }
 
-// ==================== PHOTO OVERLAY ====================
-imageSlots.forEach(slot => {
-    slot.addEventListener('click', () => {
-        const img = slot.querySelector('img');
-        if (!img) return;
-        photoOverlayImg.src = img.src;
-        photoOverlay.classList.remove('hidden');
-        photoOverlay.classList.add('show');
+// ==================== TULIP CLICK - SHOW RANDOM PICTURE ====================
+tulipsAll.forEach((tulip) => {
+    tulip.addEventListener('click', () => {
+        if (clickCount < 5) {
+            showRandomFloatingPicture();
+            clickCount++;
+        }
     });
 });
 
+function showRandomFloatingPicture() {
+    // Pick a random photo that hasn't been displayed yet
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * photoSources.length);
+    } while (displayedPhotos.includes(randomIndex) && displayedPhotos.length < photoSources.length);
+    
+    displayedPhotos.push(randomIndex);
+    const photoSrc = photoSources[randomIndex];
+    
+    // Create floating picture
+    const floatingPic = document.createElement('div');
+    floatingPic.className = 'floating-picture';
+    floatingPic.innerHTML = `<img src="${photoSrc}" alt="Photo">`;
+    
+    // Get random position
+    const randomTop = Math.random() * 60 + 10; // 10-70%
+    const randomLeft = Math.random() * 70 + 15; // 15-85%
+    
+    floatingPic.style.top = randomTop + '%';
+    floatingPic.style.left = randomLeft + '%';
+    
+    floatingPicturesContainer.appendChild(floatingPic);
+    
+    // Create fireworks
+    createFireworks(randomLeft * window.innerWidth / 100, randomTop * window.innerHeight / 100);
+    
+    // Make clickable to view full size
+    floatingPic.addEventListener('click', (e) => {
+        e.stopPropagation();
+        photoOverlayImg.src = photoSrc;
+        photoOverlay.classList.remove('hidden');
+        photoOverlay.classList.add('show');
+    });
+}
+
+function createFireworks(x, y) {
+    const colors = ['#ff69b4', '#ffdb58', '#ff1493', '#ffc300', '#ff6b9d', '#fff700'];
+    
+    for (let i = 0; i < 12; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        
+        const angle = (i / 12) * Math.PI * 2;
+        const velocity = 5 + Math.random() * 5;
+        const tx = Math.cos(angle) * velocity * 20;
+        const ty = Math.sin(angle) * velocity * 20;
+        
+        spark.style.setProperty('--tx', tx + 'px');
+        spark.style.setProperty('--ty', ty + 'px');
+        spark.style.left = x + 'px';
+        spark.style.top = y + 'px';
+        spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+        spark.style.boxShadow = `0 0 8px ${spark.style.background}`;
+        
+        floatingPicturesContainer.appendChild(spark);
+        
+        setTimeout(() => spark.remove(), 1000);
+    }
+}
+
+// ==================== PHOTO OVERLAY ====================
 function closePhotoOverlay() {
     photoOverlay.classList.remove('show');
     setTimeout(() => photoOverlay.classList.add('hidden'), 200);
@@ -168,57 +229,4 @@ photoOverlay.addEventListener('click', (e) => {
     if (e.target === photoOverlay) {
         closePhotoOverlay();
     }
-});
-
-// ==================== TULIP CLICK STARS ====================
-const permanentStarPosition = { top: '16%', left: '20%' };
-const secondClickPosition = { top: '14%', left: '68%' };
-
-function tulipClickHandler() {
-    tulipClickCount++;
-
-    if (tulipClickCount === 1) {
-        addStar(permanentStarPosition, true);
-        addStar({ top: '10%', left: '40%' }, false, true);
-        addStar({ top: '22%', left: '55%' }, false, true);
-        return;
-    }
-
-    if (tulipClickCount === 2) {
-        addStar(secondClickPosition, false, true);
-        return;
-    }
-
-    const randomTop = Math.floor(Math.random() * 40) + 10;
-    const randomLeft = Math.floor(Math.random() * 70) + 10;
-    addStar({ top: `${randomTop}%`, left: `${randomLeft}%` }, false, true);
-}
-
-function addStar(pos, isPermanent = false, autoRemove = false) {
-    const star = document.createElement('div');
-    star.className = 'glow-spark tulip-star';
-    star.style.top = pos.top;
-    star.style.left = pos.left;
-    
-    if (isPermanent) {
-        star.classList.add('permanent');
-    }
-
-    tulipStarsLayer.appendChild(star);
-
-    if (autoRemove) {
-        setTimeout(() => {
-            star.classList.add('fade-out-spark');
-            const handleTransitionEnd = () => {
-                star.remove();
-                star.removeEventListener('transitionend', handleTransitionEnd);
-            };
-            star.addEventListener('transitionend', handleTransitionEnd);
-        }, 1600);
-    }
-}
-
-// ==================== TULIP EVENT LISTENERS ====================
-tulipsAll.forEach(tulip => {
-    tulip.addEventListener('click', tulipClickHandler);
 });
