@@ -143,7 +143,6 @@ body {
     transition: all 0.6s ease;
 }
 
-/* Lamp lit state */
 .lamp-shade.lit {
     background: linear-gradient(90deg, #555 0%, #666 50%, #555 100%);
     box-shadow: 
@@ -364,33 +363,21 @@ body {
     z-index: 5;
 }
 
-/* ==================== TULIP STYLES ==================== */
 .tulip {
     position: relative;
     width: 60px;
     height: 0;
     animation: tulipGrow 3s ease-out forwards;
+    cursor: pointer;
 }
 
-.tulip-1 {
-    animation-delay: 0s;
-}
-
-.tulip-2 {
-    animation-delay: 0.3s;
-}
-
-.tulip-3 {
-    animation-delay: 0.6s;
-}
+.tulip-1 { animation-delay: 0s; }
+.tulip-2 { animation-delay: 0.3s; }
+.tulip-3 { animation-delay: 0.6s; }
 
 @keyframes tulipGrow {
-    from {
-        height: 0;
-    }
-    to {
-        height: 200px;
-    }
+    from { height: 0; }
+    to { height: 200px; }
 }
 
 .tulip-stem {
@@ -411,11 +398,8 @@ body {
     transform: translateX(-50%);
     width: 50px;
     height: 30px;
-    animation: tulipBloom 1.5s ease 2s forwards;
-}
-
-.tulip-bloom {
     opacity: 0;
+    animation: tulipBloom 1.5s ease 2s forwards;
 }
 
 @keyframes tulipBloom {
@@ -429,7 +413,6 @@ body {
     }
 }
 
-/* Petals */
 .petal {
     position: absolute;
     width: 25px;
@@ -452,37 +435,13 @@ body {
     box-shadow: 0 0 10px rgba(255, 182, 193, 0.3);
 }
 
-.petal-1 {
-    transform: translateX(-50%) rotate(-50deg);
-}
+.petal-1 { transform: translateX(-50%) rotate(-50deg); }
+.petal-2 { transform: translateX(-50%) rotate(-10deg); }
+.petal-3 { transform: translateX(-50%) rotate(30deg); }
+.petal-4 { width: 20px; height: 35px; transform: translateX(-50%) rotate(-25deg) translateY(-5px); }
+.petal-5 { width: 20px; height: 35px; transform: translateX(-50%) rotate(5deg) translateY(-5px); }
+.petal-6 { width: 20px; height: 35px; transform: translateX(-50%) rotate(35deg) translateY(-5px); }
 
-.petal-2 {
-    transform: translateX(-50%) rotate(-10deg);
-}
-
-.petal-3 {
-    transform: translateX(-50%) rotate(30deg);
-}
-
-.petal-4 {
-    width: 20px;
-    height: 35px;
-    transform: translateX(-50%) rotate(-25deg) translateY(-5px);
-}
-
-.petal-5 {
-    width: 20px;
-    height: 35px;
-    transform: translateX(-50%) rotate(5deg) translateY(-5px);
-}
-
-.petal-6 {
-    width: 20px;
-    height: 35px;
-    transform: translateX(-50%) rotate(35deg) translateY(-5px);
-}
-
-/* Center stamen */
 .center-stamen {
     position: absolute;
     width: 8px;
@@ -495,7 +454,6 @@ body {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
 }
 
-/* Tulip glow animation */
 .tulip.glow-active .petal-outer {
     animation: petalGlow 2s ease-in-out infinite;
 }
@@ -540,23 +498,82 @@ body {
     height: 100%;
 }
 
-/* Flower decorative layer */
-.flower-layer {
+/* ==================== CHRYSANTHEMUM FLOWERS ==================== */
+.flowers-container {
+    position: absolute;
+    bottom: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    height: 200px;
+    z-index: 2;
+}
+
+.chrysanthemum {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffdb58, #ffc300, #ff9500);
+    box-shadow: 0 0 30px rgba(255, 180, 0, 0.4), inset -5px -5px 15px rgba(139, 69, 0, 0.2);
+    opacity: 0;
+    animation: flowerAppear 0.8s ease forwards;
+}
+
+.chrys-1 {
+    top: 20px;
+    left: 30px;
+    animation-delay: 0.2s;
+    background: radial-gradient(circle at 30% 30%, #ffda44, #ffb700, #ff8c00);
+}
+
+.chrys-2 {
+    top: 5px;
+    left: 100px;
+    animation-delay: 0.3s;
+    background: radial-gradient(circle at 30% 30%, #ffe44d, #ffc300, #ff9500);
+}
+
+.chrys-3 {
+    top: 20px;
+    right: 30px;
+    animation-delay: 0.4s;
+    background: radial-gradient(circle at 30% 30%, #ffdb58, #ffb700, #ff8c00);
+}
+
+.chrys-4 {
+    top: 90px;
+    left: 95px;
+    animation-delay: 0.5s;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at 30% 30%, #ffe44d, #ffc300, #ff9500);
+}
+
+@keyframes flowerAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Petal texture effect for chrysanthemums */
+.chrysanthemum::before {
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    border-radius: 50%;
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(255, 255, 200, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(139, 69, 0, 0.2) 0%, transparent 50%);
 }
 
-.flower {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    opacity: 0;
-    animation: flowerPop 0.6s ease forwards;
-}
-/* Image slots as bouquet flower heads */
+/* ==================== IMAGE SLOTS ==================== */
 .images-layer {
     position: absolute;
     bottom: 55px;
@@ -593,20 +610,7 @@ body {
 }
 
 .image-slot {
-    pointer-events: all;
-}
-
-.image-bubble {
-    width: clamp(36px, 6vw, 52px);
-    height: clamp(36px, 6vw, 52px);
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(255, 220, 255, 0.25));
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 24px rgba(255, 255, 255, 0.7), 0 0 42px rgba(255, 175, 255, 0.25);
-    animation: bubbleFloat 4s ease-in-out infinite;
-}
-
-.image-slot {
+    pointer-events: auto;
     position: relative;
     z-index: 999;
     width: clamp(70px, 18vw, 120px);
@@ -624,14 +628,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: auto;
-    touch-action: manipulation;
-}
-
-.image-slot .stem,
-.image-slot .leaf,
-.image-bubble {
-    pointer-events: none;
 }
 
 .image-slot .stem {
@@ -645,6 +641,7 @@ body {
     transform-origin: top center;
     transform: translateX(-50%) rotate(-4deg);
     animation: stemSway 3.5s ease-in-out infinite;
+    pointer-events: none;
 }
 
 .image-slot .leaf {
@@ -655,6 +652,7 @@ body {
     background: rgba(88, 164, 86, 0.8);
     border-radius: 20px 20px 5px 5px;
     box-shadow: 0 0 10px rgba(88, 164, 86, 0.35);
+    pointer-events: none;
 }
 
 .image-slot .leaf-left {
@@ -678,16 +676,6 @@ body {
     pointer-events: none;
 }
 
-@keyframes stemSway {
-    0%, 100% { transform: translateX(-50%) rotate(-4deg); }
-    50% { transform: translateX(-50%) rotate(-2deg); }
-}
-
-@keyframes bubbleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
 .image-slot-1 { transform: translateY(-10px); }
 .image-slot-2 { transform: translateY(2px); }
 .image-slot-3 { transform: translateY(-8px); }
@@ -695,32 +683,6 @@ body {
 .image-slot-5 { transform: translateY(12px); }
 .image-slot-6 { transform: translateY(4px); }
 
-@media (max-width: 820px) {
-    .images-layer {
-        position: static;
-        transform: none;
-        width: 100%;
-        max-width: 300px;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 14px;
-    }
-
-    .image-column {
-        min-width: 80px;
-        margin-bottom: 10px;
-    }
-
-    .image-slot {
-        width: clamp(56px, 26vw, 90px);
-        height: clamp(56px, 26vw, 90px);
-    }
-
-    .image-slot .stem {
-        height: clamp(40px, 10vw, 70px);
-    }
-}
 .image-slot:hover {
     transform: scale(1.06);
 }
@@ -729,6 +691,11 @@ body {
     transform: scale(1.35);
     box-shadow: 0 16px 45px rgba(255, 190, 230, 0.5);
     z-index: 1200;
+}
+
+@keyframes stemSway {
+    0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+    50% { transform: translateX(-50%) rotate(-2deg); }
 }
 
 @keyframes imgGlow {
@@ -741,17 +708,10 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-.image-row {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: clamp(10px, 4vw, 26px);
-    width: 100%;
-}
-
 .top-row { margin-bottom: 4px; }
 .bottom-row { margin-top: 4px; }
 
+/* ==================== PHOTO OVERLAY MODAL ==================== */
 .photo-overlay {
     position: fixed;
     inset: 0;
@@ -769,6 +729,10 @@ body {
 .photo-overlay.show {
     opacity: 1;
     pointer-events: auto;
+}
+
+.photo-overlay.hidden {
+    display: none;
 }
 
 .photo-overlay-content {
@@ -811,88 +775,42 @@ body {
     font-size: 24px;
     cursor: pointer;
     z-index: 2;
+    transition: background 0.2s ease;
 }
 
-/* Glowing spark details for tulip */
-.glow-sparks {
-    position: fixed;
-    top: 0;
-    left: 0;
+.photo-close:hover {
+    background: rgba(0,0,0,0.85);
+}
+
+/* ==================== BOUQUET WRAP ==================== */
+.bouquet-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 80px;
+    z-index: 1;
+}
+
+.wrap-ribbon {
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 100;
+    background: linear-gradient(90deg, rgba(139, 69, 19, 0.8), rgba(160, 82, 45, 0.9));
+    clip-path: polygon(0 40%, 100% 30%, 100% 100%, 0 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.glow-spark {
+.wrap-ribbon-accent {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 20px;
+    background: linear-gradient(90deg, transparent, rgba(205, 92, 0, 0.4), transparent);
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 0 18px rgba(255,255,255,0.8), 0 0 40px rgba(255, 255, 255, 0.4);
-    opacity: 0;
-    animation: sparkFadeIn 0.6s ease forwards, sparkPulse 2s ease-in-out infinite alternate;
 }
-
-@keyframes sparkFadeIn {
-    from { opacity: 0; transform: scale(0.5); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes sparkPulse {
-    from { transform: scale(1); box-shadow: 0 0 18px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.35); }
-    to { transform: scale(1.25); box-shadow: 0 0 25px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.45); }
-}
-
-.glow-sparks.fade-out .glow-spark {
-    animation: sparkFadeOut 1s ease forwards;
-}
-
-@keyframes sparkFadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(1.5); }
-}
-
-.tulip-stars-layer {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 80;
-}
-
-.tulip-star {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    position: absolute;
-    background: rgba(255, 255, 220, 0.95);
-    box-shadow: 0 0 20px rgba(255, 255, 220, 0.8), 0 0 40px rgba(255, 238, 170, 0.35);
-    opacity: 0;
-    transform: scale(0.7);
-    animation: sparkFadeIn 0.45s ease forwards;
-}
-
-.tulip-star.permanent {
-    background: rgba(255, 244, 170, 1);
-    box-shadow: 0 0 24px rgba(255, 244, 170, 0.85), 0 0 55px rgba(255, 244, 170, 0.45);
-    animation: sparkPermanentPulse 2.2s ease-in-out infinite alternate;
-}
-
-@keyframes sparkPermanentPulse {
-    from { transform: scale(1); opacity: 1; }
-    to { transform: scale(1.12); opacity: 0.9; }
-}
-
-.tulip-star.fade-out-spark {
-    animation: sparkFadeOut 0.9s ease forwards;
-}
-
-@keyframes sparkFadeIn {
-    from { opacity: 0; transform: scale(0.4); }
-    to { opacity: 1; transform: scale(1); }
-}
-
 
 /* ==================== ENVELOPE ==================== */
 .envelope-section {
@@ -908,12 +826,6 @@ body {
 
 .envelope-section.hidden {
     display: none;
-}
-
-@media (max-width: 900px) {
-    .envelope-section {
-        bottom: -50px;
-    }
 }
 
 @keyframes envelopeAppear {
@@ -948,7 +860,6 @@ body {
     backface-visibility: hidden;
 }
 
-/* Front of envelope */
 .envelope-front {
     background: rgb(255, 132, 132);
     border: 2px solid #ffaaaa;
@@ -994,7 +905,6 @@ body {
     font-weight: bold;
 }
 
-/* Back of envelope */
 .envelope-back {
     background: linear-gradient(135deg, #ffe6f0, #fff);
     border: 2px solid #ddd;
@@ -1028,6 +938,7 @@ body {
     pointer-events: none;
     transition: opacity 0.5s ease;
     padding: 20px;
+    overflow: auto;
 }
 
 .letter-modal.show {
@@ -1041,7 +952,7 @@ body {
 
 .letter-paper {
     background: linear-gradient(135deg, #fffef5 0%, #ffe6f0 100%);
-    padding: 60px 50px;
+    padding: 40px 30px;
     border-radius: 8px;
     text-align: center;
     max-width: 600px;
@@ -1052,6 +963,7 @@ body {
     animation: letterSlide 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     position: relative;
     border: 3px solid #ffe69c;
+    margin: auto;
 }
 
 @keyframes letterSlide {
@@ -1092,8 +1004,8 @@ body {
 
 .letter-title {
     color: #ff1493;
-    font-size: 2.5em;
-    margin-bottom: 30px;
+    font-size: clamp(1.8em, 5vw, 2.5em);
+    margin-bottom: 25px;
     text-align: center;
     text-shadow: 0 2px 4px rgba(255, 20, 147, 0.2);
     font-weight: bold;
@@ -1101,15 +1013,15 @@ body {
 
 .letter-text {
     color: #333;
-    font-size: 1.05em;
-    line-height: 2;
-    margin-bottom: 20px;
+    font-size: clamp(0.9em, 2vw, 1.05em);
+    line-height: 1.8;
+    margin-bottom: 18px;
     font-family: 'Georgia', serif;
     text-align: justify;
 }
 
 .letter-text:first-of-type {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-weight: bold;
     text-align: left;
 }
@@ -1117,9 +1029,9 @@ body {
 .letter-signature {
     color: #c71585;
     font-style: italic;
-    margin-top: 40px;
+    margin-top: 30px;
     text-align: right;
-    font-size: 1.1em;
+    font-size: clamp(1em, 2.5vw, 1.1em);
     font-family: 'Brush Script MT', cursive;
 }
 
@@ -1129,7 +1041,6 @@ body {
     margin-top: 10px;
 }
 
-/* Letter paper styling - looks like real paper */
 .letter-paper::before {
     content: '';
     position: absolute;
@@ -1150,51 +1061,53 @@ body {
     pointer-events: none;
 }
 
-/* ==================== RESPONSIVE LETTER ==================== */
-@media (max-width: 768px) {
-    .letter-paper {
-        padding: 40px 30px;
-        max-width: 90%;
-    }
-
-    .letter-title {
-        font-size: 2em;
-        margin-bottom: 20px;
-    }
-
-    .letter-text {
-        font-size: 1em;
-        line-height: 1.8;
-    }
-
-    .letter-signature {
-        font-size: 1em;
-    }
+/* ==================== TULIP STARS ==================== */
+.tulip-stars-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 80;
 }
 
-@media (max-width: 480px) {
-    .letter-paper {
-        padding: 30px 20px;
-        border: 2px solid #ffe69c;
-    }
+.tulip-star {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    background: rgba(255, 255, 220, 0.95);
+    box-shadow: 0 0 20px rgba(255, 255, 220, 0.8), 0 0 40px rgba(255, 238, 170, 0.35);
+    opacity: 0;
+    transform: scale(0.7);
+    animation: sparkFadeIn 0.45s ease forwards;
+}
 
-    .letter-title {
-        font-size: 1.6em;
-        margin-bottom: 15px;
-    }
+.tulip-star.permanent {
+    background: rgba(255, 244, 170, 1);
+    box-shadow: 0 0 24px rgba(255, 244, 170, 0.85), 0 0 55px rgba(255, 244, 170, 0.45);
+    animation: sparkPermanentPulse 2.2s ease-in-out infinite alternate;
+}
 
-    .letter-text {
-        font-size: 0.95em;
-        line-height: 1.7;
-    }
+.tulip-star.fade-out-spark {
+    animation: sparkFadeOut 0.9s ease forwards;
+}
 
-    .close-letter {
-        font-size: 28px;
-    }
+@keyframes sparkFadeIn {
+    from { opacity: 0; transform: scale(0.4); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sparkFadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(1.5); }
+}
+
+@keyframes sparkPermanentPulse {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.12); opacity: 0.9; }
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .landing-container {
         flex-direction: column;
     }
@@ -1208,7 +1121,42 @@ body {
     }
 
     .tulips-field {
+        gap: 50px;
+        bottom: 100px;
+    }
+
+    .bouquet-wrapper {
+        width: 250px;
+        height: 300px;
+    }
+
+    .chrysanthemum {
+        width: 70px !important;
+        height: 70px !important;
+    }
+
+    .chrys-4 {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .landing-container {
+        flex-direction: column;
+    }
+
+    .left-section {
+        flex: 0.5;
+    }
+
+    .right-section {
+        flex: 0.5;
+    }
+
+    .tulips-field {
         gap: 40px;
+        bottom: 80px;
     }
 
     .tulip {
@@ -1216,8 +1164,23 @@ body {
     }
 
     .bouquet-wrapper {
-        width: 250px;
-        height: 300px;
+        width: 220px;
+        height: 280px;
+    }
+
+    .flowers-container {
+        width: 220px;
+        height: 180px;
+    }
+
+    .chrysanthemum {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .chrys-4 {
+        width: 70px !important;
+        height: 70px !important;
     }
 
     .password-box {
@@ -1234,13 +1197,18 @@ body {
         height: 100px;
     }
 
-    .message-card {
+    .letter-paper {
+        padding: 30px 25px;
         max-width: 90%;
-        padding: 30px 20px;
     }
 
-    .message-card h2 {
-        font-size: 1.5em;
+    .image-row {
+        gap: 12px;
+    }
+
+    .image-slot {
+        width: 70px;
+        height: 70px;
     }
 }
 
@@ -1251,7 +1219,7 @@ body {
 
     .tulips-field {
         gap: 30px;
-        bottom: 100px;
+        bottom: 60px;
     }
 
     .tulip {
@@ -1260,19 +1228,46 @@ body {
     }
 
     .bouquet-wrapper {
-        width: 200px;
-        height: 250px;
+        width: 180px;
+        height: 240px;
     }
 
-    .flower {
-        width: 35px !important;
-        height: 35px !important;
+    .flowers-container {
+        width: 160px;
+        height: 140px;
+    }
+
+    .chrysanthemum {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .chrys-1 {
+        top: 15px;
+        left: 20px;
+    }
+
+    .chrys-2 {
+        top: 0px;
+        left: 65px;
+    }
+
+    .chrys-3 {
+        top: 15px;
+        right: 20px;
+    }
+
+    .chrys-4 {
+        width: 60px !important;
+        height: 60px !important;
+        top: 75px;
+        left: 60px;
     }
 
     .image-slot {
-        width: 70px;
-        height: 70px;
-        border-width: 3px;
+        width: 60px;
+        height: 60px;
+        border-width: 2px;
     }
 
     .password-box {
@@ -1293,5 +1288,54 @@ body {
         font-size: 1.4em;
         padding: 15px;
     }
+
+    .letter-paper {
+        padding: 25px 20px;
+        border: 2px solid #ffe69c;
+    }
+
+    .letter-text {
+        line-height: 1.6;
+        margin-bottom: 14px;
+    }
+
+    .letter-modal {
+        padding: 10px;
+    }
+
+    .images-layer {
+        max-width: 280px;
+    }
+
+    .image-column {
+        min-width: 70px;
+    }
+
+    .image-row {
+        gap: 8px;
+    }
 }
 
+@media (max-height: 600px) {
+    .letter-paper {
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 25px 20px;
+    }
+
+    .letter-title {
+        margin-bottom: 15px;
+        font-size: 1.6em;
+    }
+
+    .letter-text {
+        font-size: 0.9em;
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    .letter-signature {
+        margin-top: 20px;
+        font-size: 0.95em;
+    }
+}

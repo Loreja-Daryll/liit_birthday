@@ -10,26 +10,20 @@
     <!-- Login Page -->
     <div id="loginPage" class="page active">
         <div class="login-container">
-            <!-- Ceiling -->
             <div class="ceiling"></div>
 
             <!-- Hanging Lamp -->
             <div class="lamp-container">
-                <!-- Chain/String -->
                 <div id="lampChain" class="lamp-chain">
                     <div class="chain-link"></div>
                     <div class="chain-link"></div>
                     <div class="chain-link"></div>
                 </div>
 
-                <!-- Lamp Fixture -->
                 <div class="lamp-fixture">
-                    <!-- Lamp Shade -->
                     <div id="lampShade" class="lamp-shade">
                         <div class="shade-inner"></div>
                     </div>
-
-                    <!-- Lamp Bulb -->
                     <div id="lampBulb" class="lamp-bulb"></div>
                 </div>
             </div>
@@ -44,13 +38,13 @@
                         placeholder="Enter numbers..." 
                         maxlength="8"
                         class="password-input"
+                        inputmode="numeric"
                     >
                     <button id="submitBtn" class="password-submit">Confirm</button>
                     <p class="password-hint">💡 Numbers only</p>
                 </div>
             </div>
 
-            <!-- Dark room background -->
             <div class="room-glow"></div>
         </div>
     </div>
@@ -114,24 +108,22 @@
                 </div>
             </div>
 
-            <!-- Right Side: Bouquet -->
+            <!-- Right Side: Bouquet with Photo Flowers -->
             <div class="right-section">
                 <div class="bouquet-wrapper hidden">
                     <div class="bouquet">
-                        <!-- Decorative flowers (background layer) -->
-                        <div class="flower-layer flower-layer-1">
-                            <div class="flower flower-1"></div>
-                            <div class="flower flower-2"></div>
-                            <div class="flower flower-3"></div>
-                            <div class="flower flower-4"></div>
-                            <div class="flower flower-5"></div>
+                        <!-- Chrysanthemum Flowers Layer -->
+                        <div class="flowers-container">
+                            <div class="chrysanthemum chrys-1"></div>
+                            <div class="chrysanthemum chrys-2"></div>
+                            <div class="chrysanthemum chrys-3"></div>
+                            <div class="chrysanthemum chrys-4"></div>
                         </div>
 
-                        <!-- Image slots (integrated into bouquet) -->
+                        <!-- Image slots as bouquet flower heads -->
                         <div class="images-layer">
                             <div class="image-row top-row">
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-1">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -140,7 +132,6 @@
                                     </div>
                                 </div>
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-2">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -149,7 +140,6 @@
                                     </div>
                                 </div>
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-3">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -160,7 +150,6 @@
                             </div>
                             <div class="image-row bottom-row">
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-4">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -169,7 +158,6 @@
                                     </div>
                                 </div>
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-5">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -178,7 +166,6 @@
                                     </div>
                                 </div>
                                 <div class="image-column">
-                                    <div class="image-bubble"></div>
                                     <div class="image-slot image-slot-6">
                                         <div class="stem"></div>
                                         <div class="leaf leaf-left"></div>
@@ -238,12 +225,14 @@
             </div>
         </div>
 
+        <!-- Photo Overlay Modal -->
         <div id="photoOverlay" class="photo-overlay hidden">
             <div class="photo-overlay-content">
                 <button id="photoClose" class="photo-close">&times;</button>
                 <img id="photoOverlayImg" src="" alt="Enlarged photo">
             </div>
         </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
