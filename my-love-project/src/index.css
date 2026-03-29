@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* ANIMATION: Cinematic Shooting Star (Keep this) */
+  @keyframes shooting-glide {
+    0% {
+      transform: translateX(0) translateY(0) rotate(-35deg);
+      opacity: 0;
+      width: 0;
+    }
+    15% {
+      opacity: 1;
+      width: 450px;
+    }
+    100% {
+      transform: translateX(-4000px) translateY(2000px) rotate(-35deg);
+      opacity: 0;
+      width: 0;
+    }
+  }
+
+  /* ANIMATION: Realistic Candle Flame Flicker */
+  @keyframes flame-flicker {
+    0%, 100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+    20% { transform: scale(1.1) rotate(1deg); opacity: 1; }
+    40% { transform: scale(0.95) rotate(-1deg); opacity: 0.85; }
+    60% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+    80% { transform: scale(0.9) rotate(0deg); opacity: 0.9; }
+  }
+
+  /* ANIMATION: Floating Pictures (Keep this) */
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+}
+
+/* THE SHOOTING STAR CLASS (Keep this) */
+.shooting-star {
+  position: fixed;
+  top: 0;
+  right: -500px;
+  height: 8px; /* Thicc */
+  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 20px #fff);
+  animation: shooting-glide 6s cubic-bezier(0.1, 0.5, 0.3, 1) forwards;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* CANDLE FLAME STYLING */
+.candle-flame {
+  width: 12px;
+  height: 20px;
+  background: linear-gradient(to bottom, #fff 0%, #fff 20%, #feb362 50%, #ff6e00 80%, #ff6e00 100%);
+  border-radius: 50% 50% 20% 20%;
+  filter: drop-shadow(0 0 10px #ff6e00) drop-shadow(0 0 20px #ff6e00);
+  animation: flame-flicker 1.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* CAKE SPRINKLE STYLING */
+.sprinkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+/* Aesthetic Scrollbar para sa Letter (Optional but nice) */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 5px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(220, 38, 38, 0.3);
+  border-radius: 10px;
+}
