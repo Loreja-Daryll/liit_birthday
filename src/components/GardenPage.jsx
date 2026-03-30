@@ -24,9 +24,9 @@ const GardenPage = ({ onBack }) => {
   const [stars, setStars] = useState([]);
 
   const PHOTO_SOURCES = [
-    '2bago.jpg', 'bagonapic.jpg', 'bastasiyayun.jpg', 'kyutt.jpg',
-    'nangaasar.jpg', 'pic1.jpg', 'pic2.jpg', 'pic3.jpg',
-    'pic4.jpg', 'pic5.jpg', 'pic6.jpg', 'pogi.jpg'
+    'pogi.jpg', '2bago.jpg', 'bagonapic.jpg', 'bastasiyayun.jpg', 'kyutt.jpg',
+    'nangaasar.jpg', 'pic1.jpg', 'pic8.jpg', 'pic2.jpg', 'pic3.jpg',
+    'pic4.jpg', 'pic5.jpg', 'pic6.jpg', 'pic7.jpg'
   ];
 
   const addPhoto = (e) => {
