@@ -113,12 +113,12 @@ export default function RoomPage({ onEnter }) {
           }}
           className="px-12 py-3 bg-red-600/20 backdrop-blur-xl border border-red-500/40 rounded-full hover:bg-red-600/50 transition-all hover:scale-110 active:scale-95 text-red-100 text-lg tracking-[0.3em] font-medium shadow-[0_0_25px_rgba(239,68,68,0.3)] pointer-events-auto relative"
         >
-          TARA NA 🌷
+          SULOD NA HEHE
         </button>
       </div>
 
       <div className={`absolute bottom-10 transition-opacity duration-700 ${isLit ? 'opacity-0' : 'opacity-100'} text-white/30 text-[10px] tracking-[0.4em] uppercase z-10`}>
-        Hilahin ang tali para sa sorpresa...
+        Bugnota ang tali, luway mabugto HAHAHA
       </div>
 
       <style jsx>{`

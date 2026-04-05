@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Home, Sparkles, X, Mail } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Home, Sparkles, X, Mail, BookText, Volume2, VolumeX } from 'lucide-react';
 
+/**
+ * TYPEWRITER COMPONENT
+ * Ito ang gumagawa ng "typing effect" sa letter para hindi biglang lumitaw ang text.
+ */
 const Typewriter = ({ text, speed = 50 }) => {
   const [displayedText, setDisplayedText] = useState("");
   useEffect(() => {
     let i = 0;
+    setDisplayedText("");
     const timer = setInterval(() => {
       setDisplayedText((prev) => prev + text.charAt(i));
       i++;
@@ -16,198 +21,337 @@ const Typewriter = ({ text, speed = 50 }) => {
 };
 
 const GardenPage = ({ onBack }) => {
-  const [floatingPics, setFloatingPics] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedImg, setSelectedImg] = useState(null);
-  const [showLetter, setShowLetter] = useState(false);
-  const [bursts, setBursts] = useState([]);
-  const [stars, setStars] = useState([]);
+  // --- STATES ---
+  const [isBookOpen, setIsBookOpen] = useState(false); // Kung nakabukas o sarado ang photo album
+  const [currentIndex, setCurrentIndex] = useState(0); // Kung anong page na ang tinitignan sa album
+  const [isFlipping, setIsFlipping] = useState(false); // Para sa animation ng paglipat ng page
+  const [flipDirection, setFlipDirection] = useState('next'); // Direction ng paglipat (forward/backward)
+  const [showLetter, setShowLetter] = useState(false); // Controller para sa Glassmorphism Letter Modal
+  const [stars, setStars] = useState([]); // Array para sa mga shooting stars sa background
+  const [isPlaying, setIsPlaying] = useState(false); // Music player state
 
+  // --- REFS ---
+  const audioRef1 = useRef(null); // I-rename natin para malinis
+  const audioRef2 = useRef(null); // Ito yung para sa pangalawang kanta
+
+  // --- VOLUME ADJUSTMENT PART ---
+  useEffect(() => {
+    if (audioRef1.current) audioRef1.current.volume = 1.0; 
+    if (audioRef2.current) audioRef2.current.volume = 0.7;
+  }, []);
+
+  // --- SPARKLE CURSOR (FAIRY DUST) LOGIC ---
+  // Gumagawa ng maliliit na div na sumusunod sa mouse/touch movement
+  useEffect(() => {
+    const handleMove = (e) => {
+      const x = e.clientX || (e.touches && e.touches[0].clientX);
+      const y = e.clientY || (e.touches && e.touches[0].clientY);
+
+      if (!x || !y) return;
+
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle-dot';
+      sparkle.style.left = `${x}px`;
+      sparkle.style.top = `${y}px`;
+
+      // Randomize size para magmukhang totoong magic dust
+      const size = Math.random() * 8 + 2;
+      sparkle.style.width = `${size}px`;
+      sparkle.style.height = `${size}px`;
+
+      document.body.appendChild(sparkle);
+      // Burahin yung sparkle pagkatapos ng 1 second para hindi bumigat ang page
+      setTimeout(() => sparkle.remove(), 1000);
+    };
+
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('touchmove', handleMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('touchmove', handleMove);
+    };
+  }, []);
+
+  // --- PHOTO SOURCES ---
+  // Dito mo ilalagay lahat ng file names ng pictures niyo (ilagay sa 'public' folder)
   const PHOTO_SOURCES = [
     'pogi.jpg', '2bago.jpg', 'bagonapic.jpg', 'bastasiyayun.jpg', 'kyutt.jpg',
     'nangaasar.jpg', 'pic1.jpg', 'pic8.jpeg', 'pic2.jpg', 'pic3.jpg',
     'pic4.jpg', 'pic5.jpg', 'pic6.jpg', 'pic7.jpg'
   ];
 
-  const addPhoto = (e) => {
-    if (currentIndex >= PHOTO_SOURCES.length) return;
+  // Pinapares ang photos (2 pictures per open spread ng book)
+  const photoPairs = [];
+  for (let i = 0; i < PHOTO_SOURCES.length; i += 2) {
+    photoPairs.push([PHOTO_SOURCES[i], PHOTO_SOURCES[i + 1] || null]);
+  }
 
-    // 1. Sparkle Burst Effect
-    const newBurst = { id: Date.now(), top: e.clientY, left: e.clientX };
-    setBursts(prev => [...prev, newBurst]);
-    setTimeout(() => setBursts(prev => prev.filter(b => b.id !== newBurst.id)), 1000);
+  // Iba't ibang kulay ng borders para sa bawat page para hindi boring
+  const frameStyles = [
+    "border-[8px] border-pink-100 shadow-lg",
+    "border-[8px] border-yellow-50 shadow-lg",
+    "border-[8px] border-blue-50 shadow-lg",
+    "border-[8px] border-red-50 shadow-lg",
+    "border-[8px] border-purple-50 shadow-lg",
+    "border-[8px] border-green-50 shadow-lg",
+    "border-[8px] border-white shadow-lg"
+  ];
 
-    // 2. TRIGGER MULTIPLE THICC STARS per click
-    const currentBatchId = Date.now();
-    const newStars = [
-      { id: `star-${currentBatchId}-1`, top: '15%', delay: '0s' },
-      { id: `star-${Date.now()}-2`, top: '40%', delay: '0.5s' }, // Added variety in ID for speed
-      { id: `star-${Date.now()}-3`, top: '65%', delay: '1s' }
-    ];
-    
-    setStars(prev => [...prev, ...newStars]);
-    
-    // Cleanup adapted for 6s animation + delay
-    setTimeout(() => {
-      setStars(prev => prev.filter(s => !newStars.some(ns => ns.id === s.id)));
-    }, 8000);
+  // --- SHOOTING STARS TIMER ---
+  // Nag-ge-generate ng bagong star bawat 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newStar = { id: Date.now(), top: Math.random() * 80 + '%', left: '100%' };
+      setStars(prev => [...prev, newStar]);
+      setTimeout(() => setStars(prev => prev.filter(s => s.id !== newStar.id)), 5000);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
-    // 3. ADD PHOTO
-    const nextSrc = PHOTO_SOURCES[currentIndex];
-    const newPic = {
-      id: Date.now() + 1,
-      src: nextSrc,
-      top: Math.random() * 35 + 5 + '%',
-      left: Math.random() * 70 + 10 + '%',
-    };
-    setFloatingPics(prev => [...prev, newPic]);
-    setCurrentIndex(prev => prev + 1);
+  // --- FUNCTIONS ---
+
+  // Toggle para sa Play/Pause ng music
+  const toggleMusic = () => {
+    if (isPlaying) {
+      audioRef1.current.pause();
+      audioRef2.current.pause();
+    } else {
+      audioRef1.current.play();
+      audioRef2.current.play();
+    }
+    setIsPlaying(!isPlaying);
   };
 
-  const flowerHeights = [100, 140, 80, 160, 110, 130, 90, 150];
+  // Function para buksan ang album
+  const handleOpenBook = () => {
+    if (isFlipping) return;
+    setFlipDirection('next');
+    setIsFlipping(true);
+    setTimeout(() => { setIsBookOpen(true); }, 400);
+    setTimeout(() => { setIsFlipping(false); }, 800);
+  };
 
-  // Helper function to render sprinkles
+  // Next Page logic
+  const handleNext = () => {
+    if (isFlipping) return;
+    if (currentIndex < photoPairs.length - 1) {
+      setFlipDirection('next');
+      setIsFlipping(true);
+      setTimeout(() => setCurrentIndex(c => c + 1), 400);
+      setTimeout(() => setIsFlipping(false), 800);
+    }
+  };
+
+  // Previous Page logic
+  const handlePrev = () => {
+    if (isFlipping) return;
+    if (currentIndex > 0) {
+      setFlipDirection('prev');
+      setIsFlipping(true);
+      setTimeout(() => setCurrentIndex(c => c - 1), 400);
+      setTimeout(() => setIsFlipping(false), 800);
+    } else {
+      setFlipDirection('prev');
+      setIsFlipping(true);
+      setTimeout(() => setIsBookOpen(false), 400);
+      setTimeout(() => setIsFlipping(false), 800);
+    }
+  };
+
+  // Nag-ge-generate ng random sprinkles para sa birthday cake
   const renderSprinkles = (count) => {
-    const colors = ['bg-yellow-200', 'bg-blue-200', 'bg-pink-200', 'bg-green-200', 'bg-white'];
+    const colors = ['#fde68a', '#93c5fd', '#f9a8d4', '#86efac', '#ffffff', '#fdba74'];
     return [...Array(count)].map((_, i) => (
-      <div 
-        key={i} 
-        className={`sprinkle ${colors[i % colors.length]}`} 
-        style={{ 
-          top: Math.random() * 80 + 10 + '%', 
-          left: Math.random() * 80 + 10 + '%' 
-        }} 
+      <div
+        key={i}
+        className="cake-sprinkle"
+        style={{
+          top: Math.random() * 80 + 5 + '%',
+          left: Math.random() * 90 + 5 + '%',
+          backgroundColor: colors[i % colors.length],
+          transform: `rotate(${Math.random() * 360}deg)`
+        }}
       />
     ));
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0d1a] text-white relative overflow-hidden font-sans">
-      
-      {/* Background Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900/30 via-transparent to-transparent opacity-60 pointer-events-none" />
+    <div className="min-h-screen w-full bg-birthday-gradient text-white relative overflow-hidden font-sans flex flex-col">
 
-      {/* SHOOTING STAR LAYER */}
+      {/* BACKGROUND MUSIC 1 */}
+      <audio ref={audioRef1} loop>
+        <source src="Download (2).mp4" type="audio/mpeg" />
+      </audio>
+
+      {/* BACKGROUND MUSIC 2 (Dito mo i-add yung isa pa) */}
+      <audio ref={audioRef2} loop>
+        <source src="Download (3).mp4" type="audio/mpeg" />
+      </audio>
+
+      {/* 2. MUSIC TOGGLE BUTTON (Floating bottom right) */}
+      <div className="fixed bottom-8 right-8 z-[100]">
+        <button
+          onClick={toggleMusic}
+          className={`p-4 rounded-full transition-all duration-300 ${isPlaying ? 'bg-red-600 music-pulse shadow-[0_0_20px_rgba(220,38,38,0.5)]' : 'bg-gray-600 opacity-70'} hover:scale-110 shadow-2xl focus:outline-none`}
+        >
+          {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
+        </button>
+      </div>
+
+      {/* 3. SHOOTING STARS RENDER */}
       {stars.map(star => (
-        <div
-          key={star.id}
-          className="shooting-star"
-          style={{
-            top: star.top,
-            animationDelay: star.delay
-          }}
-        />
+        <div key={star.id} className="shooting-star" style={{ top: star.top }} />
       ))}
 
-      {/* SPARKLE BURST */}
-      {bursts.map(burst => (
-        <div key={burst.id} className="pointer-events-none fixed z-[60]" style={{ top: burst.top, left: burst.left }}>
-          {[...Array(8)].map((_, i) => (
-            <div key={i} className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-ping"
-              style={{ transform: `rotate(${i * 45}deg) translateY(-20px)`, boxShadow: '0 0 10px #facc15' }} />
-          ))}
-        </div>
-      ))}
-
-      {/* FLOATING PHOTOS */}
-      {floatingPics.map(pic => (
-        <div key={pic.id} style={{ top: pic.top, left: pic.left }} onClick={() => setSelectedImg(pic.src)}
-          className="fixed w-24 h-24 md:w-36 md:h-36 rounded-full border-4 border-white/40 overflow-hidden cursor-zoom-in animate-float z-30 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-          <img src={pic.src} className="w-full h-full object-cover" alt="Memory" />
-        </div>
-      ))}
-
-      {/* IMAGE MODAL */}
-      {selectedImg && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md">
-          <button onClick={() => setSelectedImg(null)} className="absolute top-6 right-6 p-2 bg-white/10 rounded-full z-[110]"><X size={28} /></button>
-          <img src={selectedImg} className="max-w-full max-h-[85vh] rounded-full border-8 border-white/20 shadow-2xl object-contain animate-in zoom-in-95 duration-300" alt="View" />
-        </div>
-      )}
-
-      {/* LETTER MODAL */}
-      {showLetter && (
-        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 backdrop-blur-md">
-          <button onClick={() => setShowLetter(false)} className="absolute top-6 right-6 p-2 bg-white/20 rounded-full z-[110]"><X size={28} /></button>
-          <div className="bg-[#fff9f0] text-[#5d4037] w-full max-w-md h-[70vh] rounded-3xl p-8 shadow-2xl overflow-y-auto relative border-8 border-red-500/30">
-            <h2 className="text-4xl font-bold mb-6 text-red-600 font-serif border-b-2 border-red-100 pb-2 text-center">20</h2>
-            <div className="space-y-4 leading-relaxed text-lg italic font-medium">
-              <Typewriter text="Hi Love, Happy 20th Birthday! ❤️\n\nMahal na mahal kita at sana nagustuhan mo itong munting garden na ginawa ko para sa'yo! ✨" speed={40} />
-              <p className="font-bold text-red-600 text-xl mt-6 text-right">— Your Love ❤️</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* HEADER */}
-      <header className="p-6 flex justify-between items-center relative z-40">
-        <h1 className="text-xl md:text-2xl font-bold text-red-300 drop-shadow-[0_0_10px_rgba(252,165,165,0.5)] flex items-center gap-2 font-serif uppercase tracking-tighter">
-          <Sparkles className="text-red-400 animate-pulse" size={20} /> Birthday Garden
+      {/* 4. HEADER SECTION */}
+      <header className="p-4 flex justify-between items-center relative z-50">
+        <h1 className="text-lg font-bold text-red-300 flex items-center gap-2 font-serif tracking-widest opacity-70">
+          <Sparkles className="text-red-400" size={16} /> HAPPY NA B-DAY MO'PA
         </h1>
-        <button onClick={onBack} className="p-2 rounded-full bg-white/10 hover:bg-red-500/30 transition-all pointer-events-auto"><Home className="text-red-300" size={20} /></button>
+        <button onClick={onBack} className="p-2 rounded-full bg-white/10 hover:bg-red-500/30 transition-all">
+          <Home className="text-red-300" size={18} />
+        </button>
       </header>
 
-      {/* FLOWERS AREA (BOTTOM AREA part 1) */}
-      <div className="fixed bottom-0 left-0 w-full flex flex-col items-center z-50 pointer-events-none">
-        <div className="flex justify-center items-end gap-2 md:gap-6 h-[150px] pointer-events-auto">
-          {flowerHeights.map((height, i) => (
-            <div key={i} className="flex flex-col items-center group cursor-pointer" onClick={addPhoto}>
-              <div className="w-8 h-10 relative transition-all group-hover:scale-125 group-hover:-translate-y-3">
-                <div className="absolute inset-0 bg-red-500/50 blur-[15px] rounded-full animate-pulse"></div>
-                <div className="absolute inset-0 bg-red-700 rounded-t-full rounded-b-lg scale-90" style={{ clipPath: 'ellipse(45% 50% at 50% 50%)' }} />
-                <div className="absolute top-0 left-[-4px] w-6 h-9 bg-gradient-to-br from-red-400 to-red-600 rotate-[-15deg] origin-bottom shadow-[0_0_10px_rgba(239,68,68,0.5)]" style={{ clipPath: 'ellipse(45% 50% at 50% 50%)' }} />
-                <div className="absolute top-0 right-[-4px] w-6 h-9 bg-gradient-to-bl from-red-400 to-red-600 rotate-[15deg] origin-bottom shadow-[0_0_10px_rgba(239,68,68,0.5)]" style={{ clipPath: 'ellipse(45% 50% at 50% 50%)' }} />
-                <div className="absolute top-1 left-0.5 w-6 h-9 bg-gradient-to-t from-red-500 to-red-400" style={{ clipPath: 'ellipse(45% 50% at 50% 50%)' }} />
+      {/* 5. MAIN CONTENT (PHOTO ALBUM / BOOK) */}
+      <main className="flex-grow flex items-center justify-center p-2 relative z-30 perspective-2000">
+        <div className="relative w-full max-w-6xl aspect-[1.4/1] flex justify-center transform-style-3d">
+          <div className={`relative h-full transition-all duration-700 ease-in-out ${isBookOpen ? 'w-full' : 'w-1/2 translate-x-1/2'}`}>
+
+            {/* BOOK COVER (Lumalabas lang pag sarado ang book) */}
+            {!isBookOpen && (
+              <div
+                onClick={handleOpenBook}
+                className={`absolute inset-0 z-[60] origin-left cursor-pointer transition-transform
+                  ${isFlipping ? 'animate-flip-forward' : 'hover:rotate-y-[-15deg]'}
+                  bg-[#3d0a0a] rounded-r-2xl rounded-l-sm border-l-[12px] border-red-950 shadow-2xl
+                  flex flex-col items-center justify-center border-2 border-red-800/30 transform-style-3d`}
+              >
+                <div className="backface-hidden flex flex-col items-center">
+                  <BookText size={80} className="text-red-400 mb-6" />
+                  <h2 className="text-3xl font-serif font-bold text-red-100 tracking-[1px]">PICTURES</h2>
+                  <p className="mt-8 text-red-400/40 text-sm animate-pulse tracking-[0.2em]">CLICK TO OPEN</p>
+                </div>
               </div>
-              <div style={{ height: `${height}px` }} className="w-1 bg-gradient-to-b from-green-400 to-green-900 relative">
-                <div className="absolute top-2 -left-3 w-4 h-1.5 bg-green-400 rounded-full rotate-[40deg]"></div>
+            )}
+
+            {/* OPENED BOOK PAGES */}
+            {isBookOpen && (
+              <div className="w-full h-full flex transform-style-3d animate-fade-in relative">
+                {/* LEFT PAGE */}
+                <div className="flex-1 bg-[#fdf8f3] rounded-l-md border-r border-black/10 relative p-4 flex flex-col shadow-inner overflow-hidden">
+                  <h6 className="text-center font-serif text-[12px] uppercase tracking-widest text-red-400/60 mb-2 font-bold">Happy Birthday ✨</h6>
+                  <div className="flex-grow flex items-center justify-center overflow-hidden">
+                    <div className={`relative p-1 bg-white ${frameStyles[currentIndex % frameStyles.length]} transition-all duration-500 max-h-full`}>
+                      <img src={photoPairs[currentIndex][0]} className="max-w-full max-h-[75vh] object-contain rounded-sm shadow-md" alt="Left" />
+                      <div className="absolute -top-3 -left-3 text-2xl">🎈</div>
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 cursor-w-resize z-10" onClick={handlePrev} />
+                </div>
+
+                {/* FLIPPING PAGE ANIMATION */}
+                {isFlipping && (
+                  <div className={`absolute top-0 h-full w-1/2 z-40 ${flipDirection === 'next' ? 'right-0 origin-left animate-flip-forward' : 'left-0 origin-right animate-flip-backward'}`}>
+                    <div className="w-full h-full bg-[#f4ece4] shadow-2xl border-x border-black/10" />
+                  </div>
+                )}
+
+                {/* RIGHT PAGE */}
+                <div className="flex-1 bg-[#fdf8f3] rounded-r-md relative p-4 flex flex-col shadow-inner overflow-hidden">
+                  <h6 className="text-center font-serif text-[12px] uppercase tracking-widest text-red-400/60 mb-2 font-bold">Special Day ❤️</h6>
+                  <div className="flex-grow flex items-center justify-center overflow-hidden">
+                    {photoPairs[currentIndex][1] ? (
+                      <div className={`relative p-1 bg-white ${frameStyles[(currentIndex + 1) % frameStyles.length]} transition-all duration-500 max-h-full`}>
+                        <img src={photoPairs[currentIndex][1]} className="max-w-full max-h-[75vh] object-contain rounded-sm shadow-md" alt="Right" />
+                        <div className="absolute -top-3 -right-3 text-2xl">🎉</div>
+                      </div>
+                    ) : (
+                      <div className="text-red-200 font-serif italic text-center text-sm">To be continued... ❤️</div>
+                    )}
+                  </div>
+                  <div className="absolute inset-0 cursor-e-resize z-10" onClick={handleNext} />
+                </div>
+                {/* Book Spine (Ang guhit sa gitna ng libro) */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 bg-red-950/20 z-50" />
               </div>
+            )}
+            {/* Shadow ng libro pag sarado */}
+            <div className="absolute inset-0 w-full h-full bg-[#2d0707] rounded-r-2xl -z-10 shadow-xl" style={{ display: isBookOpen ? 'none' : 'block' }} />
+          </div>
+        </div>
+      </main>
+
+      {/* 6. FOOTER SECTION (BOUQUET, ENVELOPE, & CAKE) */}
+      <footer className="relative z-40 w-full pb-6 flex flex-col items-center">
+
+        {/* BOUQUET & MAIL BUTTON */}
+        <div className="relative w-64 h-64 flex items-center justify-center mb-2">
+          <img src="bouquet.PNG" alt="Bouquet" className="w-full h-full object-contain z-10" />
+
+          <button
+            onClick={() => setShowLetter(true)}
+            className="absolute top-[75%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 group focus:outline-none"
+          >
+            <div className="bg-[red] p-2 rounded-lg shadow-2xl border-t-2 border-red-500 transform -rotate-3 group-hover:rotate-0 transition-transform">
+              <Mail size={30} className="text-white" />
+              <div className="absolute -top-1 -right-1 bg-yellow-400 w-4 h-4 rounded-full flex items-center justify-center text-[8px] text-red-900 font-bold border border-white animate-bounce">!</div>
             </div>
-          ))}
+          </button>
         </div>
 
-        {/* CAKE & ENVELOPE AREA (BOTTOM AREA part 2) */}
-        <div className="bg-gradient-to-t from-[#050505] to-transparent w-full pt-10 pb-6 flex flex-col items-center pointer-events-auto">
-          
-          {/* CAKE WITH CANDLE */}
-          <div className="flex flex-col items-center mb-4 scale-75 md:scale-90 origin-bottom relative">
-            
-            {/* GOLD NUMBER 20 CANDLE (Aesthetic) */}
-            <div className="absolute -top-[70px] flex flex-col items-center z-10">
-              {/* Realistic Flame */}
-              <div className="candle-flame"></div>
-              {/* Gold "20" Number */}
-              <div className="text-[32px] font-bold text-yellow-500 drop-shadow-[0_0_10px_rgba(255,215,0,0.8)] leading-none italic font-serif mt-1">20</div>
-              {/* Candle Stick */}
-              <div className="w-2 h-6 bg-gradient-to-b from-yellow-400 to-yellow-700 shadow-md"></div>
-            </div>
-
-            {/* Cake Layers with Sprinkles */}
-            {/* Top Layer */}
-            <div className="w-16 h-6 bg-red-300 rounded-t-lg relative border-b border-red-400 overflow-hidden z-0">
-              {renderSprinkles(8)}
-            </div>
-            {/* Middle Layer */}
-            <div className="w-24 h-8 bg-red-500 border-b border-red-600 relative overflow-hidden z-0">
-              {renderSprinkles(12)}
-            </div>
-            {/* Bottom Layer */}
-            <div className="w-32 h-12 bg-red-700 rounded-b-lg shadow-[0_10px_40px_rgba(220,38,38,0.4)] relative overflow-hidden border-t border-red-800 z-0">
-              {renderSprinkles(16)}
-            </div>
+        {/* BIRTHDAY CAKE */}
+        <div className="relative flex flex-col items-center scale-90 origin-bottom mt-20 z-30">
+          {/* Candle & Age */}
+          <div className="absolute -top-[80px] flex flex-col items-center z-10">
+            <div className="candle-flame mb-1"></div>
+            <div className="text-[40px] font-bold text-yellow-500 drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] leading-none italic font-serif">20</div>
+            <div className="w-2.5 h-6 bg-gradient-to-b from-yellow-300 to-yellow-600"></div>
           </div>
 
-          {/* RED ENVELOPE */}
-          <div onClick={() => setShowLetter(true)} className="group cursor-pointer flex flex-col items-center transition-transform hover:scale-110">
-            <div className="bg-red-600 p-4 rounded-2xl shadow-[0_0_20px_rgba(220,38,38,0.4)] text-white relative border-2 border-red-400">
-              <Mail size={32} />
-              <div className="absolute -right-2 -top-2 bg-yellow-500 w-6 h-6 rounded-full flex items-center justify-center text-[10px] text-red-900 font-bold animate-bounce border border-white">1</div>
-            </div>
-            <span className="text-[11px] mt-2 uppercase tracking-[0.2em] text-red-300 font-bold">Open Letter</span>
+          {/* Cake Tiers */}
+          <div className="w-24 h-10 bg-red-300 rounded-t-2xl relative shadow-md border-b border-red-400/20 overflow-hidden">
+            {renderSprinkles(20)}
+          </div>
+          <div className="w-36 h-12 bg-red-500 relative shadow-lg border-b border-red-600/20 overflow-hidden">
+            {renderSprinkles(30)}
+          </div>
+          <div className="w-48 h-16 bg-red-700 rounded-b-3xl relative shadow-2xl overflow-hidden">
+            {renderSprinkles(40)}
           </div>
         </div>
+      </footer>
 
-      </div>
+      {/* 7. GLASSMORPHISM LETTER MODAL (Ang "Surprise" letter mo) */}
+      {showLetter && (
+        <div className="fixed inset-0 z-[100] bg-black/40 flex items-center justify-center p-4 backdrop-blur-md animate-fade-in">
+          {/* Close Button */}
+          <button
+            onClick={() => setShowLetter(false)}
+            className="absolute top-8 right-8 p-3 bg-white-600 rounded-full z-[110] hover:bg-red-700 transition-all hover:rotate-90 shadow-2xl"
+          >
+            <X size={28} className="text-white" />
+          </button>
+
+          {/* Letter Content Area */}
+          <div className="glass-letter w-full max-w-lg h-[70vh] rounded-[30px] p-10 shadow-2xl relative overflow-y-auto border border-white/20">
+            <h2 className="text-center font-serif text-3xl text-red-600 font-bold mb-8 border-b-2 border-red-200 pb-2">Happy 20th Birthday!</h2>
+
+            <div className="italic text-xl leading-relaxed font-semibold space-y-6 text-[#2d0707]">
+              {/* Dito mo i-edit ang text ng message mo, Mahal! */}
+              <Typewriter
+                text={"Hi Mahal, Happy 20th Birthday! ❤️\n\nMahal na mahal kita at sana nagustuhan mo itong munting garden, bouquet, at album na ginawa ko para sa'yo! ✨\n\nSana naging special ang araw mo dahil special ka sa akin. Palagi kitang susuportahan sa lahat ng pangarap mo. Happy birthday again, Mahal!"}
+                speed={50}
+              />
+
+              <div className="pt-10 flex flex-col items-end">
+                <p className="text-red-700 text-2xl font-black tracking-wider">— Your Love ❤️</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
