@@ -76,9 +76,9 @@ const GardenPage = ({ onBack }) => {
   // --- PHOTO SOURCES ---
   // Dito mo ilalagay lahat ng file names ng pictures niyo (ilagay sa 'public' folder)
   const PHOTO_SOURCES = [
-    'pogi.jpg', '2bago.jpg', 'bagonapic.jpg', 'bastasiyayun.jpg', 'kyutt.jpg',
-    'nangaasar.jpg', 'pic1.jpg', 'pic8.jpeg', 'pic2.jpg', 'pic3.jpg',
-    'pic4.jpg', 'pic5.jpg', 'pic6.jpg', 'pic7.jpg'
+    'bastasiyayun.jpg', 'pogi.jpg', 'pic1.jpg', 'bagonapic.jpg', 'kyutt.jpg',
+    'nangaasar.jpg', 'ingkodan.jpg', 'pic4.jpg', 'pic2.jpg', '2bago.jpg', 'pic8.jpeg', 
+     'pic3.jpg', 'pic6.jpg', 'pic7.jpg', 'pic5.jpg', 'oringon.jpg'
   ];
 
   // Pinapares ang photos (2 pictures per open spread ng book)
@@ -288,15 +288,15 @@ const GardenPage = ({ onBack }) => {
 
         {/* BOUQUET & MAIL BUTTON */}
         <div className="relative w-64 h-64 flex items-center justify-center mb-2">
-          <img src="bouquet.PNG" alt="Bouquet" className="w-full h-full object-contain z-10" />
+          <img src="bouquet1.png" alt="Bouquet" className="w-full h-full object-contain z-10" />
 
           <button
             onClick={() => setShowLetter(true)}
-            className="absolute top-[75%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 group focus:outline-none"
+            className="absolute top-[63%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer transition-transform hover:scale-110 active:scale-95 group focus:outline-none"
           >
-            <div className="bg-[red] p-2 rounded-lg shadow-2xl border-t-2 border-red-500 transform -rotate-3 group-hover:rotate-0 transition-transform">
+            <div className="bg-[red] p-0.5 rounded-xl shadow-2xl border-t-1 border-red-200 transform -rotate-3 group-hover:rotate-0 transition-transform">
               <Mail size={30} className="text-white" />
-              <div className="absolute -top-1 -right-1 bg-yellow-400 w-4 h-4 rounded-full flex items-center justify-center text-[8px] text-red-900 font-bold border border-white animate-bounce">!</div>
+              <div className="absolute -top-1 -right-1 bg-white-400 w-4 h-4 rounded-full flex items-center justify-center text-[13px] text-white-900 font-bold border border-white animate-bounce">!</div>
             </div>
           </button>
         </div>
