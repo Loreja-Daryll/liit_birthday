@@ -225,13 +225,13 @@ const GardenPage = ({ onBack }) => {
                 onClick={handleOpenBook}
                 className={`absolute inset-0 z-[60] origin-left cursor-pointer transition-transform
                   ${isFlipping ? 'animate-flip-forward' : 'hover:rotate-y-[-15deg]'}
-                  bg-[#3d0a0a] rounded-r-2xl rounded-l-sm border-l-[12px] border-red-950 shadow-2xl
+                  bg-[#fefce8] rounded-r-2xl rounded-l-sm border-l-[12px] border-red-300 shadow-2xl
                   flex flex-col items-center justify-center border-2 border-red-800/30 transform-style-3d`}
               >
                 <div className="backface-hidden flex flex-col items-center">
-                  <BookText size={80} className="text-red-400 mb-6" />
-                  <h2 className="text-3xl font-serif font-bold text-red-100 tracking-[1px]">PICTURES</h2>
-                  <p className="mt-8 text-red-400/40 text-sm animate-pulse tracking-[0.2em]">CLICK TO OPEN</p>
+                  <BookText size={80} className="text-red-800 mb-6" />
+                  <h2 className="text-3xl font-serif font-bold text-red-950 tracking-[1px]">PICTURES</h2>
+                  <p className="mt-8 text-red-900/90 text-sm animate-pulse tracking-[0.2em]">CLICK TO OPEN</p>
                 </div>
               </div>
             )}
@@ -301,11 +301,28 @@ const GardenPage = ({ onBack }) => {
           </button>
         </div>
 
-        {/* BIRTHDAY CAKE */}
+        {/* BIRTHDAY CAKE & SURROUNDINGS */}
         <div className="relative flex flex-col items-center scale-90 origin-bottom mt-20 z-30">
+          
+          {/* GIFT BOX (Left side of cake) */}
+          <div className="absolute -left-2 bottom-4 w-16 h-16 bg-red-500 rounded-lg shadow-xl border-t-4 border-red-300 transform -rotate-12 flex items-center justify-center">
+             <div className="absolute w-full h-4 bg-pink-400"></div>
+             <div className="absolute h-full w-4 bg-pink-400"></div>
+             <div className="absolute -top-3 text-xl">🎀</div>
+          </div>
+
+          {/* CHOCOLATE BAR (Right side of cake) */}
+          <div className="absolute -right-0 top-29 bottom-2 w-20 h-10 bg-[#4b2c20] rounded shadow-lg border-2 border-[#361e15] transform rotate-6 overflow-hidden">
+            <div className="grid grid-cols-4 h-full">
+               {[...Array(4)].map((_, i) => (
+                 <div key={i} className="border-r border-black/20 shadow-inner"></div>
+               ))}
+            </div>
+          </div>
+
           {/* Candle & Age */}
-          <div className="absolute -top-[80px] flex flex-col items-center z-10">
-            <div className="candle-flame mb-1"></div>
+          <div className="absolute -top-[90px] flex flex-col items-center z-10">
+            <div className="candle-flame translate-y-[15px] mb-1"></div>
             <div className="text-[40px] font-bold text-yellow-500 drop-shadow-[0_0_15px_rgba(255,215,0,0.8)] leading-none italic font-serif">20</div>
             <div className="w-2.5 h-6 bg-gradient-to-b from-yellow-300 to-yellow-600"></div>
           </div>
@@ -319,6 +336,13 @@ const GardenPage = ({ onBack }) => {
           </div>
           <div className="w-48 h-16 bg-red-700 rounded-b-3xl relative shadow-2xl overflow-hidden">
             {renderSprinkles(40)}
+            {/* Chocolate Drip effect */}
+            <div className="absolute top-0 left-0 w-full h-3 bg-[#3d0a0a] rounded-full blur-[1px]"></div>
+          </div>
+
+          {/* CAKE PLATE/STAND (Ang circle sa baba) */}
+          <div className="w-64 h-6 bg-gray-200 rounded-[100%] mt-[-10px] shadow-2xl border-b-4 border-gray-400 z-[-1] flex items-center justify-center">
+             <div className="w-[95%] h-[80%] border border-gray-300 rounded-[100%]"></div>
           </div>
         </div>
       </footer>
